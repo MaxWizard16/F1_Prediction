@@ -861,3 +861,6 @@ driverId,driverRef,number,code,forename,surname,dob,nationality,url
 861,colapinto,43,COL,Franco,Colapinto,27-05-2003,Argentinian ,http://en.wikipedia.org/wiki/Franco_Colapinto
 862,doohan,61,DOO,Jack,Doohan,20-01-2003,Australian,http://en.wikipedia.org/wiki/Jack_Doohan
 863,antonelli,12,ANT,Kimi,Antonelli,25-08-2006,Italian,https://en.wikipedia.org/wiki/Kimi_Antonelli
+864,hadjar,6,HAD,Isack,Hadjar,28-09-2004,French,https://en.wikipedia.org/wiki/Isack_Hadjar
+865,lindblad,41,LIN,Arvid,Lindblad,08-08-2007,British,https://en.wikipedia.org/wiki/Arvid_Lindblad
+866,bortoleto,5,BOR,Gabriel,Bortoleto,14-10-2004,Brazilian,https://en.wikipedia.org/wiki/Gabriel_Bortoleto
