@@ -1,16 +1,18 @@
-# 🏎️ Monaco Grand Prix Prediction Engine
+# 🏎️ Formula 1 Race Prediction Engine
 
-A Machine Learning and Data Analysis project built in Python to predict the winner of the Monaco Grand Prix using historical Formula 1 data.
+A Data Analysis and Machine Learning project built in Python to predict Formula 1 race winners using historical race data, driver performance, and constructor performance.
 
 ## Project Status
 
 🚧 In Development
 
 Current phase:
-- Data collection
-- Data cleaning
-- Feature engineering
-- Exploratory analysis
+
+* Data collection
+* Data cleaning
+* Feature engineering
+* Circuit-based prediction engine
+* Exploratory analysis
 
 Machine learning models will be added after a strong analytics pipeline is established.
 
@@ -18,16 +20,16 @@ Machine learning models will be added after a strong analytics pipeline is estab
 
 ## Objective
 
-Predict the most likely winner of the Monaco Grand Prix using:
+Build a race prediction engine capable of generating predictions for any Formula 1 circuit using:
 
-- Historical Monaco race results
-- Driver performance history
-- Constructor performance history
-- Qualifying performance
-- Reliability metrics
-- Current season form
+* Historical race results
+* Driver performance history
+* Constructor performance history
+* Qualifying performance
+* Reliability metrics
+* Current season form
 
-The goal is to build a progressively more sophisticated prediction engine rather than immediately jumping into machine learning.
+The project began with Monaco Grand Prix analysis and has since been refactored into a reusable circuit-based prediction system.
 
 ---
 
@@ -38,62 +40,100 @@ Dataset used:
 **Formula 1 World Championship (1950–2024)**
 
 Source:
+
 https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2024
 
 Main files used:
 
-- circuits.csv
-- races.csv
-- results.csv
-- drivers.csv
-- constructors.csv
-- qualifying.csv
+* circuits.csv
+* races.csv
+* results.csv
+* drivers.csv
+* constructors.csv
+* qualifying.csv
 
 ---
 
 ## Current Pipeline
 
 ### Step 1
-Identify Monaco's circuit ID from `circuits.csv`.
+
+Select a circuit using its `circuitId`.
 
 ### Step 2
-Extract all historical Monaco races from `races.csv`.
+
+Extract all historical races held at that circuit.
 
 ### Step 3
-Filter race results to include only:
-- Monaco Grand Prix races
-- Current 2026 drivers
+
+Filter race results for current Formula 1 drivers.
 
 ### Step 4
-Calculate historical driver performance:
-- Average Monaco finishing position
+
+Calculate driver-specific circuit performance:
+
+* Average finishing position
 
 ### Step 5
-Calculate historical constructor performance:
-- Average Monaco finishing position
+
+Calculate constructor-specific circuit performance:
+
+* Average finishing position
 
 ### Step 6
-Create a weighted prediction score:
+
+Combine driver and constructor performance into a weighted prediction score.
+
+### Current Prediction Formula
 
 Prediction Score =
-70% Driver Monaco Performance +
-30% Constructor Monaco Performance
 
-Lower score indicates a stronger predicted performance.
+0.7 × Driver Circuit Performance
+
+*
+
+0.3 × Constructor Circuit Performance
+
+Lower scores indicate stronger predicted performance.
 
 ---
 
 ## Current Features
 
-✅ Monaco race filtering
+✅ Circuit-based prediction engine
+
+✅ Historical race filtering
 
 ✅ Current driver filtering
 
-✅ Driver average Monaco finish
+✅ Driver average finishing position
 
-✅ Constructor average Monaco finish
+✅ Constructor average finishing position
 
 ✅ Weighted prediction score
+
+✅ Reusable `build_prediction(circuit_id)` function
+
+---
+
+## Recent Progress
+
+### 2026-05-30
+
+* Project created
+* Monaco filtering pipeline completed
+* Driver performance model completed
+* Constructor performance model completed
+* First weighted prediction model completed
+* Project published to GitHub
+
+### 2026-06-02
+
+* Refactored Monaco-only code into a reusable prediction engine
+* Created `build_prediction(circuit_id)`
+* Added support for predictions at any circuit in the dataset
+* Separated driver and constructor feature generation
+* Improved project architecture for future UI and ML integration
 
 ---
 
@@ -101,39 +141,55 @@ Lower score indicates a stronger predicted performance.
 
 ### Driver Features
 
-- Monaco wins
-- Monaco podiums
-- Average qualifying position
-- DNF rate
-- Street circuit performance
+* Circuit wins
+* Circuit podiums
+* Average qualifying position
+* DNF rate
+* Street circuit performance
 
 ### Constructor Features
 
-- Monaco team performance
-- Team reliability
-- Current season pace
+* Historical circuit performance
+* Reliability metrics
+* Current season pace
 
 ### Race Features
 
-- Qualifying importance weighting
-- Recent form weighting
-- Weather effects
-- Era-adjusted performance
+* Qualifying weighting
+* Recent form weighting
+* Weather effects
+* Era-adjusted performance
+
+### Machine Learning
+
+* Linear Regression
+* Random Forest
+* XGBoost
+
+### User Interface
+
+* Race selection dropdown
+* Streamlit dashboard
+* Interactive prediction visualizations
 
 ---
 
 ## Technologies Used
 
-- Python
-- Pandas
-- Git
-- GitHub
+### Current
 
-Future:
-- NumPy
-- Scikit-Learn
-- Matplotlib
-- Seaborn
+* Python
+* Pandas
+* Git
+* GitHub
+
+### Planned
+
+* NumPy
+* Scikit-Learn
+* Matplotlib
+* Seaborn
+* Streamlit
 
 ---
 
@@ -141,30 +197,87 @@ Future:
 
 This project is being built as a practical exercise in:
 
-- Data analysis
-- Feature engineering
-- Relational datasets
-- Data pipelines
-- Machine learning workflows
-- Sports analytics
+* Data Analysis
+* Feature Engineering
+* Relational Datasets
+* Data Pipelines
+* Machine Learning Workflows
+* Sports Analytics
+* Predictive Modeling
+
+The goal is to understand the complete data science process, from raw data collection and cleaning to feature engineering, model development, and deployment.
 
 ---
 
-## Timeline
+## Repository Structure
 
-### 2026-05-30
-- Project created
-- Monaco filtering pipeline completed
-- Driver performance model completed
-- Constructor performance model completed
-- First weighted prediction model completed
-- Project published to GitHub
+```text
+F1_Prediction/
+│
+├── circuits.csv
+├── races.csv
+├── results.csv
+├── drivers.csv
+├── constructors.csv
+├── qualifying.csv
+├── drivers_2026.csv
+│
+├── prediction.py
+│
+└── README.md
+```
+
+---
+
+## Future Roadmap
+
+### Phase 1 — Data Analysis
+
+* Historical race filtering
+* Driver statistics
+* Constructor statistics
+* Feature engineering
+
+### Phase 2 — Prediction Engine
+
+* Circuit-based predictions
+* Enhanced scoring system
+* Qualifying integration
+* Reliability metrics
+
+### Phase 3 — Machine Learning
+
+* Feature selection
+* Model training
+* Performance evaluation
+* Hyperparameter tuning
+
+### Phase 4 — Deployment
+
+* Streamlit web application
+* Interactive race selection
+* Prediction dashboard
+* Model visualization
 
 ---
 
 ## Author
 
-Tanish Bansal
+**Tanish Bansal**
 
-Robotics & Artificial Intelligence
-Thapar Institute of Engineering & Technology
+B.E. Robotics & Artificial Intelligence
+Thapar Institute of Engineering & Technology, Patiala
+
+### About This Project
+
+This project is being developed as a hands-on exploration of:
+
+* Data Analysis
+* Feature Engineering
+* Sports Analytics
+* Machine Learning
+* Predictive Modeling
+
+The objective is not only to predict Formula 1 race outcomes but also to build a complete data science workflow from raw historical data to deployable prediction systems.
+
+GitHub: https://github.com/MaxWizard16
