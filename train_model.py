@@ -3,7 +3,7 @@ from catboost import CatBoostRegressor
 from sklearn.metrics import mean_absolute_error
 
 qualifying = pd.read_csv("qualifying.csv")
-df = pd.read_csv("master_dataset.csv")
+df = pd.read_csv("master_dataset_features.csv")
 
 train_df = df[df["year"]<= 2022]
 test_df = df[df["year"]>=2023]
@@ -11,7 +11,7 @@ test_df = df[df["year"]>=2023]
 # print("Training rows:", len(train_df))
 # print("Testing rows:", len(test_df))
 
-features = ["driverId","constructorId", "circuitId","year"]
+features = ["driverId","constructorId", "circuitId","year","driver_recent_form","constructor_recent_form","driver_recent_qualifying_form"]
 
 X_train = train_df[features]
 y_train = train_df["positionOrder"]
