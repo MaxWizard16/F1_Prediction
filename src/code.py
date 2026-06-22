@@ -51,12 +51,12 @@ build_prediction(9)
 # # print(driver_average_finish)
 # # best_driver = driver_average_finish.sort_values("positionOrder").iloc[0]
 
-# # print(
-# #     f"The predicted winner of the next Monaco GP is "
-# #     f"{best_driver['forename']} {best_driver['surname']} "
-# #     f"with an average Monaco finish of "
-# #     f"{best_driver['positionOrder']:.2f}"
-# # )
+# print(
+#     f"The predicted winner of the next Monaco GP is "
+#     f"{best_driver['forename']} {best_driver['surname']} "
+#     f"with an average Monaco finish of "
+#     f"{best_driver['positionOrder']:.2f}"
+# )
 
 # constructor_average_finish = (monaco_driver_results.groupby("constructorId")["positionOrder"].mean().sort_values().reset_index())
 # # print(constructor_average_finish)
@@ -64,7 +64,7 @@ build_prediction(9)
 # drivers_2026 = drivers_2026.merge(driver_average_finish,on="driverId")
 # # print(drivers_2026.columns)
 
-# drivers_2026 = drivers_2026.merge(constructor_average_finish,on="constructorId")
-# drivers_2026["prediction_score"] = (drivers_2026["positionOrder_x"]*0.7) + (drivers_2026["positionOrder_y"]*0.3)
-# drivers_2026 = drivers_2026.sort_values("prediction_score")
-# print(drivers_2026[["forename","surname","prediction_score"]])
+drivers_2026 = drivers_2026.merge(constructor_average_finish,on="constructorId")
+drivers_2026["prediction_score"] = (drivers_2026["positionOrder_x"]*0.7) + (drivers_2026["positionOrder_y"]*0.3)
+drivers_2026 = drivers_2026.sort_values("prediction_score")
+print(drivers_2026[["forename","surname","prediction_score"]])

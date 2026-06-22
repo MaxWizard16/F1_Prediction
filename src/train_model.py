@@ -11,7 +11,9 @@ test_df = df[df["year"]>=2023]
 # print("Training rows:", len(train_df))
 # print("Testing rows:", len(test_df))
 
-features = ["driverId","constructorId", "circuitId","year","driver_recent_form","constructor_recent_form","driver_recent_qualifying_form"]
+features = ["driverId","constructorId", "circuitId","year","driver_recent_form","constructor_recent_form","driver_recent_qualifying_form","driver_circuit_form",
+"constructor_circuit_form",
+"driver_dnf_rate"]
 
 X_train = train_df[features]
 y_train = train_df["positionOrder"]
