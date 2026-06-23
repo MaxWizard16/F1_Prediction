@@ -151,8 +151,8 @@ Current benchmark results:
 Best MAE achieved so far:
 
 ```text
-3.0669
-```
+2.8443
+``
 
 using ExtraTreesRegressor.
 
