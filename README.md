@@ -1,426 +1,234 @@
-# 🏎️ Formula 1 Race Prediction Engine
+# F1 Race Prediction Engine
 
-A Data Analysis and Machine Learning project built in Python to predict Formula 1 race finishing positions using historical Formula 1 data from 1950–2024.
+## Overview
 
-## Project Status
+This project predicts Formula 1 race finishing positions using historical race data and machine learning models.
 
-🚧 In Development
+The project uses the Formula 1 World Championship dataset (1950–2024) and builds a feature engineering pipeline that captures:
 
-Current phase:
-
-* Data collection
-* Data cleaning
-* Machine learning baseline development
-* Feature engineering
-* Model evaluation
-
----
-
-## Objective
-
-Build a machine learning system capable of predicting Formula 1 race results before a race weekend begins.
-
-The long-term goal is to create a prediction engine that combines:
-
-* Historical race results
-* Driver performance trends
-* Constructor performance trends
+* Driver recent performance
+* Constructor recent performance
 * Circuit-specific performance
+* Track-type performance
 * Qualifying performance
-* Reliability metrics
-* Recent form indicators
+* Reliability (DNF rate)
+* Momentum trends
+* Grid position effects
+* Teammate comparisons
 
-The project began as a circuit-based statistical prediction system and has now evolved into a machine learning pipeline.
-
----
-
-## Dataset
-
-Dataset Used:
-
-**Formula 1 World Championship (1950–2024)**
-
-Source:
-
-https://www.kaggle.com/datasets/rohanrao/formula-1-world-championship-1950-2024
-
-Main files used:
-
-* races.csv
-* results.csv
-* drivers.csv
-* constructors.csv
-* qualifying.csv
+The goal is to generate pre-race predictions for any Formula 1 Grand Prix.
 
 ---
 
-## Current Architecture
-
-### Phase 1 — Statistical Prediction Engine
-
-Initial implementation used historical circuit data to generate predictions.
-
-Pipeline:
-
-1. Select circuit using `circuitId`
-2. Extract historical races for that circuit
-3. Filter for current drivers
-4. Calculate driver average finish
-5. Calculate constructor average finish
-6. Generate weighted prediction score
-
-Prediction Formula:
-
-Prediction Score =
-
-0.7 × Driver Average Finish
-
-*
-
-0.3 × Constructor Average Finish
-
-Lower scores indicate stronger predicted performance.
-
----
-
-### Phase 2 — Machine Learning Pipeline
-
-The project now includes a supervised learning workflow.
-
-A master training dataset was created using historical race results.
-
-Each row represents:
-
-Driver + Race
-
-Training features currently include:
-
-* driverId
-* constructorId
-* circuitId
-* year
-
-Optional feature:
-
-* grid position (used for post-qualifying predictions)
-
-Target variable:
-
-* positionOrder (final race finishing position)
-
----
-
-## Machine Learning Workflow
-
-### Step 1
-
-Build master dataset from:
-
-* races.csv
-* results.csv
-
-Dataset size:
-
-* 26,759 race entries
-* 7 core columns
-
-Columns:
-
-* raceId
-* year
-* circuitId
-* driverId
-* constructorId
-* grid
-* positionOrder
-
----
-
-### Step 2
-
-Chronological train/test split
-
-Training Data:
-
-* 1950–2022
-
-Testing Data:
-
-* 2023–2024
-
-Rows:
-
-* Training: 25,840
-* Testing: 919
-
----
-
-### Step 3
-
-Train a CatBoost Regressor
-
-Model:
-
-* CatBoostRegressor
-
-Reason:
-
-* Handles categorical variables directly
-* No one-hot encoding required
-* Strong performance on tabular datasets
-
----
-
-### Step 4
-
-Evaluate Model Performance
-
-Baseline Model Features:
-
-* driverId
-* constructorId
-* circuitId
-* year
-
-Results:
-
-MAE (Mean Absolute Error)
-
-4.02 positions
-
-This means the model predicts finishing position within approximately four places on average.
-
----
-
-### Post-Qualifying Experiment
-
-Including:
-
-* grid position
-
-Improved performance:
-
-MAE = 3.31 positions
-
-This demonstrates the strong predictive power of qualifying position.
-
----
-
-## Current Features
-
-### Statistical Engine
-
-✅ Circuit-based prediction
-
-✅ Driver average finish
-
-✅ Constructor average finish
-
-✅ Weighted scoring model
-
-✅ Reusable `build_prediction(circuitId)` function
-
----
-
-### Machine Learning Engine
-
-✅ Master dataset generation
-
-✅ Chronological train/test split
-
-✅ CatBoost implementation
-
-✅ Baseline regression model
-
-✅ Performance evaluation using MAE
-
-✅ Pre-weekend prediction baseline
-
----
-
-## Recent Progress
-
-### 2026-05-30
-
-* Project created
-* Monaco GP analysis completed
-* Driver performance pipeline completed
-* Constructor performance pipeline completed
-* Weighted prediction model completed
-* GitHub repository created
-
-### 2026-06-02
-
-* Refactored Monaco-specific code into reusable prediction engine
-* Added support for any circuit
-* Improved project architecture
-
-### 2026-06-06
-
-* Created master machine learning dataset
-* Generated 26,759 historical training examples
-* Implemented chronological train/test split
-* Trained first CatBoost model
-* Evaluated model using Mean Absolute Error
-* Achieved MAE of 4.02 using only:
-
-  * driverId
-  * constructorId
-  * circuitId
-  * year
-* Achieved MAE of 3.31 when including grid position
-* Established first machine learning baseline for future improvements
-
----
-
-## Planned Features
-
-### Feature Engineering
-
-* Driver recent form
-* Constructor recent form
-* Circuit-specific driver performance
-* Circuit-specific constructor performance
-* Driver podium rate
-* Driver win rate
-* Reliability metrics
-* DNF rate
-
-### Race Features
-
-* Historical qualifying strength
-* Weather effects
-* Era-adjusted performance
-* Circuit categorization
-
-### Machine Learning
-
-* Random Forest
-* XGBoost
-* Hyperparameter tuning
-* Ensemble models
-
-### Deployment
-
-* Streamlit dashboard
-* Interactive race selection
-* Prediction visualizations
-* Race simulation interface
-
----
-
-## Technologies Used
-
-### Current
-
-* Python
-* Pandas
-* CatBoost
-* Git
-* GitHub
-
-### Planned
-
-* NumPy
-* Scikit-Learn
-* XGBoost
-* Matplotlib
-* Streamlit
-
----
-
-## Learning Goals
-
-This project is being developed as a practical exploration of:
-
-* Data Analysis
-* Feature Engineering
-* Sports Analytics
-* Machine Learning
-* Predictive Modeling
-* Time-Series Aware Evaluation
-* Data Science Workflows
-
-The goal is to build a complete machine learning system, progressing from raw historical Formula 1 data to deployable predictive models.
-
----
-
-## Repository Structure
+## Project Structure
 
 ```text
-F1_Prediction/
+F1 Prediction/
 │
-├── races.csv
-├── results.csv
-├── drivers.csv
-├── constructors.csv
-├── qualifying.csv
-├── drivers_2026.csv
+├── Data/
+│   ├── results.csv
+│   ├── races.csv
+│   ├── circuits.csv
+│   ├── qualifying.csv
+│   ├── status.csv
+│   ├── master_dataset.csv
+│   ├── master_dataset_features.csv
 │
-├── prediction.py
-├── build_training_dataset.py
-├── train_model.py
-│
-├── master_dataset.csv
+├── src/
+│   ├── training_dataset.py
+│   ├── feature_engineering.py
+│   ├── train_model.py
+│   ├── model_benchmark.py
 │
 └── README.md
 ```
 
 ---
 
-## Future Roadmap
+## Dataset Construction
 
-### Phase 1 — Data Preparation
+### training_dataset.py
 
-✅ Data collection
+Creates the master dataset by combining:
 
-✅ Data cleaning
+* results.csv
+* races.csv
+* circuits.csv
+* qualifying.csv
+* status.csv
 
-✅ Master dataset generation
+Generated columns include:
+
+| Column              | Description                     |
+| ------------------- | ------------------------------- |
+| raceId              | Race identifier                 |
+| year                | Season                          |
+| round               | Race round                      |
+| circuitId           | Circuit identifier              |
+| circuitRef          | Circuit reference               |
+| track_type          | Street / High Speed / Technical |
+| alt                 | Circuit altitude                |
+| driverId            | Driver identifier               |
+| constructorId       | Constructor identifier          |
+| grid                | Starting position               |
+| qualifying_position | Qualifying result               |
+| positionOrder       | Final race position             |
+| statusId            | Race status                     |
+| is_dnf              | Did Not Finish flag             |
 
 ---
 
-### Phase 2 — Baseline Machine Learning
+## Feature Engineering
 
-✅ CatBoost baseline model
+### Driver Features
 
-✅ Model evaluation
+* driver_recent_form
+* driver_recent_3
+* driver_recent_10
+* driver_momentum
+* driver_circuit_form
+* driver_tracktype_form
+* driver_recent_qualifying_form
+* driver_dnf_rate
 
-🔄 Feature engineering
+### Constructor Features
+
+* constructor_recent_form
+* constructor_recent_3
+* constructor_recent_10
+* constructor_momentum
+* constructor_circuit_form
+* constructor_tracktype_form
+
+### Race Features
+
+* grid
+* relative_grid
+
+### Comparison Features
+
+* driver_vs_teammate
 
 ---
 
-### Phase 3 — Advanced Modeling
+## Machine Learning Models Tested
 
-* Driver form metrics
-* Constructor form metrics
-* Circuit-aware features
+The project benchmarks multiple regression models:
+
+1. CatBoost
+2. LightGBM
+3. XGBoost
+4. ExtraTrees
+5. Random Forest
+6. Gradient Boosting
+7. HistGradientBoosting
+8. Ridge Regression
+9. Linear Regression
+10. AdaBoost
+11. Decision Tree
+
+Models are evaluated using Mean Absolute Error (MAE).
+
+---
+
+## Benchmark Results
+
+Current benchmark results:
+
+| Rank | Model            |
+| ---- | ---------------- |
+| 1    | ExtraTrees       |
+| 2    | XGBoost          |
+| 3    | LightGBM         |
+| 4    | GradientBoosting |
+| 5    | RandomForest     |
+| 6    | CatBoost         |
+| 7    | Ridge            |
+| 8    | LinearRegression |
+| 9    | AdaBoost         |
+| 10   | DecisionTree     |
+
+Best MAE achieved so far:
+
+```text
+3.0669
+```
+
+using ExtraTreesRegressor.
+
+---
+
+## Training Pipeline
+
+### Step 1
+
+Generate master dataset:
+
+```bash
+python src/training_dataset.py
+```
+
+### Step 2
+
+Generate engineered features:
+
+```bash
+python src/feature_engineering.py
+```
+
+### Step 3
+
+Train benchmark models:
+
+```bash
+python src/model_benchmark.py
+```
+
+### Step 4
+
+Review model comparison results:
+
+```text
+Data/model_comparison.csv
+```
+
+---
+
+## Future Improvements
+
+Planned enhancements:
+
+* Driver Elo ratings
+* Constructor Elo ratings
+* Sprint race features
+* Championship position features
+* Weather features
+* Stacking ensemble models
 * Hyperparameter optimization
+* Monte Carlo race simulations
+* Winner probability estimation
+* Podium probability estimation
 
 ---
 
-### Phase 4 — Deployment
+## Technologies Used
 
-* Streamlit web application
-* Interactive prediction dashboard
-* Race simulation tools
+* Python
+* Pandas
+* NumPy
+* Scikit-Learn
+* CatBoost
+* XGBoost
+* LightGBM
 
 ---
 
 ## Author
 
-**Tanish Bansal**
+Tanish Bansal
 
 B.E. Robotics & Artificial Intelligence
 
-Thapar Institute of Engineering & Technology, Patiala
+Thapar Institute of Engineering and Technology
 
-GitHub: https://github.com/MaxWizard16
-
----
-
-## About This Project
-
-This project serves as a hands-on exploration of Formula 1 analytics, machine learning, and predictive modeling.
-
-The objective is not only to predict race outcomes, but also to develop a complete end-to-end machine learning workflow, from raw historical data to production-ready prediction systems.
+Formula 1 Race Prediction Project
