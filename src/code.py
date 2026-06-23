@@ -64,7 +64,7 @@ build_prediction(9)
 # drivers_2026 = drivers_2026.merge(driver_average_finish,on="driverId")
 # # print(drivers_2026.columns)
 
-drivers_2026 = drivers_2026.merge(constructor_average_finish,on="constructorId")
+drivers_2026 = drivers_2026.merge( constructor_average_finish , on="constructorId")
 drivers_2026["prediction_score"] = (drivers_2026["positionOrder_x"]*0.7) + (drivers_2026["positionOrder_y"]*0.3)
 drivers_2026 = drivers_2026.sort_values("prediction_score")
 print(drivers_2026[["forename","surname","prediction_score"]])
