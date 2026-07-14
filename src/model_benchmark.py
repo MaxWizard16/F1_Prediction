@@ -1,3 +1,5 @@
+import joblib
+import os
 from pathlib import Path
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
@@ -17,6 +19,8 @@ from xgboost import XGBRegressor
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR/"Data"
+MODEL_DIR  = BASE_DIR/ "Models"
+MODEL_DIR.mkdir(exist_ok=True)
 df = pd.read_csv(DATA_DIR/ "master_dataset_features.csv")
 
 train_df = df[df["year"]<=2022]
@@ -50,7 +54,7 @@ models = {
     ),
 
     "ExtraTrees": ExtraTreesRegressor(
-        n_estimators=1500,max_features="sqrt",min_samples_leaf=2, n_jobs=-1, random_state=42
+        n_estimators=1500,min_samples_leaf=2, n_jobs=-1, random_state=42
     ),
 
     "GradientBoosting": GradientBoostingRegressor(
@@ -131,11 +135,29 @@ results_df = (
     results_df.sort_values("MAE")
 )
 
+
 print("\nFinal Ranking")
 print(results_df)
 results_df.to_csv(
     DATA_DIR/"model_comparison.csv",index=False
 )
+
+best_model_name = results_df.iloc[0]["Model"]
+best_model = trained_models[best_model_name]
+
+print(f"Best Model : {best_model_name}")
+print(f"Best MAE: {results_df.iloc[0]['MAE']:.4f}")
+
+joblib.dump(best_model, MODEL_DIR / "best_model.pkl")
+joblib.dump(features, MODEL_DIR/ "feature_columns.pkl")
+
+with open(MODEL_DIR / "model_name.txt", "w") as f:
+    f.write(best_model_name)
+
+print("\nSaved Successfully!")
+print(f"Model : {MODEL_DIR/ 'best_model.pkl'}")
+print(f"Features : {MODEL_DIR/ 'features.pkl'}")
+print(f"Model Name : {MODEL_DIR/ 'model_name.txt'}")
 
 print("ENSEMBLE TEST")
 et_pred = trained_models["ExtraTrees"].predict(X_test_encoded)
