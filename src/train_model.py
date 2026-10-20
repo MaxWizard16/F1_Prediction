@@ -42,7 +42,7 @@ model.fit(
 )
 
 
-print("\n===== FEATURE IMPORTANCE =====")
+print("\nFEATURE IMPORTANCE")
 
 feature_importance = model.get_feature_importance()
 
@@ -55,7 +55,7 @@ predictions = model.predict(X_test)
 
 mae = mean_absolute_error(y_test, predictions)
 
-print("\n===== MODEL PERFORMANCE =====")
+print("\nMODEL PERFORMANCE")
 print("MAE:", round(mae, 4))
 
 
@@ -68,7 +68,7 @@ results_df["error"] = abs(
     results_df["actual"] - results_df["predicted"]
 )
 
-print("\n===== TOP 20 BIGGEST ERRORS =====")
+print("\nTOP 20 BIGGEST ERRORS")
 
 print(
     results_df.sort_values(
@@ -86,6 +86,6 @@ baseline_mae = mean_absolute_error(
     baseline_predictions
 )
 
-print("\n===== BASELINE COMPARISON =====")
+print("\nBASELINE COMPARISON")
 print("Baseline MAE:", round(baseline_mae, 4))
 print("CatBoost MAE:", round(mae, 4))

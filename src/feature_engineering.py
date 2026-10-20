@@ -6,9 +6,9 @@ DATA_DIR = BASE_DIR/"Data"
 df = pd.read_csv(DATA_DIR/"master_dataset.csv")
 df = df.sort_values(["year","raceId"])
 
-status = pd.read_csv(DATA_DIR/"status.csv")
-df = df.merge(status[["statusId","status"]],on="statusId",how="left")
-df["is_dnf"] = (~df["status"].str.contains("Finished|\\+",case=False,na=False)).astype(int)
+# status = pd.read_csv(DATA_DIR/"status.csv")
+# df = df.merge(status[["statusId","status"]],on="statusId",how="left")
+# df["is_dnf"] = (~df["status"].str.contains("Finished|\\+",case=False,na=False)).astype(int)
 
 weights = np.array([0.4,0.25,0.15,0.1,0.1])
 def weighted_average(x):

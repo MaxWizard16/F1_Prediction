@@ -156,7 +156,7 @@ with open(MODEL_DIR / "model_name.txt", "w") as f:
 
 print("\nSaved Successfully!")
 print(f"Model : {MODEL_DIR/ 'best_model.pkl'}")
-print(f"Features : {MODEL_DIR/ 'features.pkl'}")
+print(f"Features : {MODEL_DIR/ 'feature_columns.pkl'}")
 print(f"Model Name : {MODEL_DIR/ 'model_name.txt'}")
 
 print("ENSEMBLE TEST")
