@@ -1,0 +1,5 @@
+Model: CatBoostClassifier
+Target: positionOrder == 1
+Training rows: 26759
+Latest historical season: 2024
+Note: prediction probabilities are normalized across the selected 2026 driver lineup.

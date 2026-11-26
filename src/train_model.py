@@ -6,6 +6,8 @@ from sklearn.metrics import mean_absolute_error
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "Data"
+GRAPH_DIR = BASE_DIR/ "graphs"
+GRAPH_DIR.mkdir(exist_ok=True)
 
 df = pd.read_csv(DATA_DIR / "master_dataset_features.csv")
 
@@ -49,9 +51,46 @@ feature_importance = model.get_feature_importance()
 for feature, importance in zip(features, feature_importance):
     print(f"{feature}: {importance:.2f}")
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+importance_df = pd.DataFrame({"Feature": features, "Importance": feature_importance})
+importance_df = importance_df.sort_values("Importance", ascending= False)
+plt.figure(figsize = (12,8))
+
+sns.barplot(data=importance_df, x="Importance", y="Feature", hue="Feature", palette="magma", legend=False)
+plt.title("CatBoost Feature Importance", fontsize=16)
+plt.xlabel("Importance Score")
+plt.ylabel("Features")
+plt.tight_layout()
+plt.savefig( GRAPH_DIR / "feature_importance.png", dpi=300)
+plt.show()
 
 predictions = model.predict(X_test)
 
+plt.figure(figsize=(9, 7))
+plt.scatter(y_test,predictions,alpha=0.4)
+plt.plot([1, 20], [1,20], linestyle="--", color="red", label="Perfect Prediction")
+plt.title("Actual vs Predicted Race Finishing Positions")
+plt.xlabel("Actual Position")
+plt.ylabel("Predicted Position")
+plt.legend()
+plt.grid(alpha=0.3)
+plt.tight_layout()
+plt.savefig(GRAPH_DIR/"actual_vs_predicted.png", dpi=300)
+plt.show()
+
+
+errors = y_test.values - predictions
+plt.figure(figsize=(10, 6))
+sns.histplot(errors, bins=30, kde=True)
+plt.title("Distribution of Prediction Errors")
+plt.xlabel("Prediction Error (Actual - Predicted)")
+plt.ylabel("Frequency")
+plt.axvline(0, linestyle="--", color = "red")
+plt.tight_layout()
+plt.savefig(GRAPH_DIR/ "prediction_distribution.png", dpi = 300)
+plt.show()
 
 mae = mean_absolute_error(y_test, predictions)
 

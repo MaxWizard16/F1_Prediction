@@ -3,6 +3,8 @@ import os
 from pathlib import Path
 import pandas as pd
 from sklearn.metrics import mean_absolute_error
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 from sklearn.linear_model import (
     LinearRegression, Ridge, Lasso, ElasticNet
@@ -19,6 +21,8 @@ from xgboost import XGBRegressor
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR/"Data"
+GRAPH_DIR = BASE_DIR/ "graphs"
+GRAPH_DIR.mkdir(exist_ok=True)
 MODEL_DIR  = BASE_DIR/ "Models"
 MODEL_DIR.mkdir(exist_ok=True)
 df = pd.read_csv(DATA_DIR/ "master_dataset_features.csv")
@@ -136,11 +140,38 @@ results_df = (
 )
 
 
+plt.figure(figsize=(12,7))
+sns.barplot(data=results_df, x ="MAE", y = "Model", hue = "Model", palette = "viridis", legend = False)
+plt.title("Model Performance Comparison", fontsize = 16)
+plt.xlabel("Mean Absolute Error(MAE)")
+plt.ylabel("Machine Learning Model")
+plt.grid(axis = "x", alpha =0.3)
+plt.tight_layout()
+plt.savefig(GRAPH_DIR / "model_comparison.png", dpi=300)
+plt.show
+
 print("\nFinal Ranking")
 print(results_df)
 results_df.to_csv(
     DATA_DIR/"model_comparison.csv",index=False
 )
+
+plt.figure(figsize=(13, 8))
+plot_df = results_df.sort_values("MAE")
+
+ax = sns.barplot(data=plot_df, x="MAE", y= "Model", hue="Model", palette="viridis", legend= False)
+for container in ax.containers:
+    ax.bar_label(container, fmt="%.3f", padding=5, fontsize=10)
+
+plt.title("F1 Race Prediction - Model Performance Comparison", fontsize = 16, fontweight = "bold", pad = 20)
+plt.xlabel("Mean Absolute Error(MAE)", fontsize = 12)
+plt.ylabel("Machine Learning Models", fontsize = 12)
+plt.xlim(0, plot_df["MAE"].max()*1.18)
+plt.grid(axis="x", linestyle="--", alpha=0.3)
+plt.tight_layout()
+plt.savefig(GRAPH_DIR / "model_mae_comparison.png", dpi=300, bbox_inches = "tight")
+plt.show()
+print("Model comparison graph saved succesfully!")
 
 best_model_name = results_df.iloc[0]["Model"]
 best_model = trained_models[best_model_name]
@@ -150,6 +181,7 @@ print(f"Best MAE: {results_df.iloc[0]['MAE']:.4f}")
 
 joblib.dump(best_model, MODEL_DIR / "best_model.pkl")
 joblib.dump(features, MODEL_DIR/ "feature_columns.pkl")
+joblib.dump(list(X_train_encoded.columns), MODEL_DIR / "encoded_columns.pkl")
 
 with open(MODEL_DIR / "model_name.txt", "w") as f:
     f.write(best_model_name)

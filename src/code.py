@@ -1,9 +1,19 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+from pathlib import Path
 
-drivers_2026 = pd.read_csv("drivers_2026.csv")
-results = pd.read_csv("results.csv")
-races = pd.read_csv("races.csv")
-drivers = pd.read_csv("drivers.csv")
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATA_DIR = BASE_DIR / "Data"
+GRAPH_DIR = BASE_DIR / "graphs"
+
+GRAPH_DIR.mkdir(exist_ok=True)
+
+drivers_2026 = pd.read_csv(DATA_DIR / "drivers_2026.csv")
+results = pd.read_csv(DATA_DIR / "results.csv")
+races = pd.read_csv(DATA_DIR / "races.csv")
+drivers = pd.read_csv(DATA_DIR / "drivers.csv")
+
+
 
 def build_prediction(circuitId):
     selected_races = races[races["circuitId"] == circuitId]
@@ -31,7 +41,21 @@ def build_prediction(circuitId):
     # print(prediction_table)
     prediction_table["prediction_score"] = (((prediction_table["positionOrder_x"])*0.7)+(prediction_table["positionOrder_y"])*0.3)
     prediction_table = prediction_table.sort_values("prediction_score")
-    print(prediction_table)
+    top_10 = prediction_table.head(10).copy()
+    top_10["Driver"] = (top_10["forename"] + " " + top_10["surname"])
+    plt.figure(figsize=(11, 7))
+    plt.barh(top_10["Driver"], top_10["prediction_score"])
+    plt.gca().invert_yaxis()
+
+    plt.title("Top 10 Predicted Drivers")
+    plt.xlabel("Predicted Finishing Score")
+    plt.ylabel("Driver")
+    plt.grid(axis="x", alpha = 0.3)
+    plt.tight_layout()
+    plt.savefig(GRAPH_DIR / "driver_predictions.png", dpi = 300)
+    plt.show()
+
+    return prediction_table
 
 build_prediction(9)
 
@@ -64,7 +88,7 @@ build_prediction(9)
 # drivers_2026 = drivers_2026.merge(driver_average_finish,on="driverId")
 # # print(drivers_2026.columns)
 
-drivers_2026 = drivers_2026.merge( constructor_average_finish, on="constructorId")
-drivers_2026["prediction_score"] = (drivers_2026["positionOrder_x"]*0.7) + (drivers_2026["positionOrder_y"]*0.3)
-drivers_2026 = drivers_2026.sort_values("prediction_score")
-print(drivers_2026[["forename","surname","prediction_score"]])
+# drivers_2026 = drivers_2026.merge(constructor_average_finish, on="constructorId")
+# drivers_2026["prediction_score"] = (drivers_2026["positionOrder_x"]*0.7) + (drivers_2026["positionOrder_y"]*0.3)
+# drivers_2026 = drivers_2026.sort_values("prediction_score")
+# print(drivers_2026[["forename","surname","prediction_score"]])
